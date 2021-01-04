@@ -61,7 +61,7 @@ while (abs(flogtheta(end) - flogtheta(end-1))>MIN_DIFF)
     disp(strcat(['delta flogtheta: ', num2str(abs(flogtheta(end) - flogtheta(end-1)))])); 
     disp(' ')
     
-    [hyp, flogthetatmp,i] = feval(minf,hyp, @gp, 100, inf, mean, cov, lik, input, target);
+    [hyp, flogthetatmp,i] = feval(minf,hyp, @gp, 400, inf, mean, cov, lik, input, target);
     
     if isempty(flogthetatmp) % no improvement: at minimum
         disp('oops')
