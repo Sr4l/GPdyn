@@ -1,4 +1,4 @@
-function [hyp, flogtheta, i,simy,simse2] = trainGPoe(hyp, inf, mean, cov, lik, input, target, lag, simf, Nsamples)
+function [hyp, flogtheta, i,simy,simse2] = trainGPoe(hyp, inf, mean, cov, lik, input, target, lag, simf, Nsamples, minf)
 % Function for the optimisation (training) of GP model hyperparameters
 %
 %% Syntax
@@ -72,7 +72,7 @@ flogtheta = [0,-1/eps];
 %%N = length(input,1) +    lag-1
 %%[u(1) ... u(N-lag)]';	[u(N-lag+1) ...  u(N)]
  
-u=[input(:,lag+1)      ;	input(end,lag+2:end);NaN];
+u=[input(:,lag+1)      ;	input(end,lag+2:end)';NaN];
 
 simulated_y=[input(1:lag,1);target];
 
@@ -80,7 +80,7 @@ while (abs(flogtheta(end) - flogtheta(end-1))>MIN_DIFF)
 	disp(' '); 
 	disp(strcat(['delta flogtheta: ', num2str(abs(flogtheta(end) - flogtheta(end-1)))])); 
 	disp(' ')
-	[hyp, flogthetatmp,i] = feval(minf, hyp, @simLL, -100,...
+	[hyp, flogthetatmp,i] = feval(minf, hyp, @simLL, 100,...
 				inf, mean, cov, lik, u, simulated_y, target, lag, simf);
 	
 	%in the last iteration of minimisation algorithm the simulation is evaluated again for obtaining
