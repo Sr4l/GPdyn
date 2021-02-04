@@ -72,11 +72,11 @@ flogtheta = [0,-1/eps];
 %%N = length(input,1) +    lag-1
 %%[u(1) ... u(N-lag)]';	[u(N-lag+1) ...  u(N)]
  
-u=[input(:,lag+1)      ;	input(end,lag+2:end)';NaN];
+u=[input(:,lag+1)      ;	input(end,lag+2:end)'; NaN];
 
 simulated_y=[input(1:lag,1);target];
 
-while (abs(flogtheta(end) - flogtheta(end-1))>MIN_DIFF)         
+while (abs(flogtheta(end) - flogtheta(end-1))>MIN_DIFF)
 	disp(' '); 
 	disp(strcat(['delta flogtheta: ', num2str(abs(flogtheta(end) - flogtheta(end-1)))])); 
 	disp(' ')
@@ -90,6 +90,11 @@ while (abs(flogtheta(end) - flogtheta(end-1))>MIN_DIFF)
     
     if isempty(flogthetatmp) % no improvement: at minimum
         disp('oops')
+        break
+    end
+    
+    if max(size(flogtheta)) > 62
+        disp("long runtime");
         break
     end
 	flogtheta = [flogtheta flogthetatmp(end)];
